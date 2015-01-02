@@ -1,0 +1,5 @@
+docs
+vendor
+composer.lock
+bin/dev.php
+tests/ExampleTest.example
