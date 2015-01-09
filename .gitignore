@@ -2,4 +2,5 @@ docs
 vendor
 composer.lock
 bin/dev.php
-tests/ExampleTest.example
+tests/coverage-clover.xml
+tests/coverage-coveralls.json

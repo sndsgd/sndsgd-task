@@ -1,10 +1,10 @@
 # sndsgd-task
 
-
 [![Latest Version](https://img.shields.io/github/release/sndsgd/sndsgd-task.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-task/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-task/LICENSE)
 [![Build Status](https://img.shields.io/travis/sndsgd/sndsgd-task/master.svg?style=flat-square)](https://travis-ci.org/sndsgd/sndsgd-task)
-
+[![Coverage Status](https://img.shields.io/coveralls/sndsgd/sndsgd-task.svg?style=flat-square)](https://coveralls.io/r/sndsgd/sndsgd-task?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/sndsgd/task.svg?style=flat-square)](https://packagist.org/packages/sndsgd/task)
 
 ## Requirements
 
