@@ -1,9 +1,9 @@
-# sndsgd-app
+# sndsgd-task
 
 
-[![Latest Version](https://img.shields.io/github/release/sndsgd/sndsgd-app.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-app/releases)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-app/LICENSE)
-[![Build Status](https://img.shields.io/travis/sndsgd/sndsgd-app/master.svg?style=flat-square)](https://travis-ci.org/sndsgd/sndsgd-app)
+[![Latest Version](https://img.shields.io/github/release/sndsgd/sndsgd-task.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-task/releases)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/sndsgd/sndsgd-task/LICENSE)
+[![Build Status](https://img.shields.io/travis/sndsgd/sndsgd-task/master.svg?style=flat-square)](https://travis-ci.org/sndsgd/sndsgd-task)
 
 
 ## Requirements
@@ -13,10 +13,10 @@ You need **PHP >= 5.4.0** to use this library, however, the latest stable versio
 
 ## Install
 
-Install `sndsgd/app` using [Composer](https://getcomposer.org/).
+Install `sndsgd/task` using [Composer](https://getcomposer.org/).
 
 ```
-composer require sndsgd/app
+composer require sndsgd/task
 ```
 
 ## Testing

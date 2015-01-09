@@ -12,7 +12,7 @@
    syntaxCheck="false"
 >
    <testsuites>
-      <testsuite name="sndsgd/app tests">
+      <testsuite name="sndsgd/task tests">
          <directory suffix=".php">./tests/</directory>
       </testsuite>
    </testsuites>
