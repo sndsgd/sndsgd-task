@@ -1,65 +1,53 @@
 <?php
 
+namespace sndsgd;
+
 use \org\bovigo\vfs\vfsStream;
 use \sndsgd\Task;
+use \sndsgd\task\ExampleTaskRunner;
+use \sndsgd\task\ExampleAddTask;
 
 
-class TaskTest extends PHPUnit_Framework_TestCase
+/**
+ * @coversDefaultClass \sndsgd\Task
+ */
+class TaskTest extends \PHPUnit_Framework_TestCase
 {
-   protected $task;
-   protected $runner;
-
    /**
-    * @covers \sndsgd\Task
-    * @covers \sndsgd\task\Runner
+    * @coversNothing
     */
-   public function setUp()
+   public static function setUpBeforeClass()
    {
-      $this->task = new AddTask;
-      $this->runner = new TaskRunner;
-      $this->task->setRunner($this->runner);
+      $dir = __DIR__.'/task-resources';
+      $files = array_diff(scandir($dir), ['.','..']);
+      foreach ($files as $filename) {
+         require_once "$dir/$filename";
+      }
    }
 
    /**
-    * @covers \sndsgd\Task::validateClassname
+    * @covers ::validateClassname
     */
    public function testValidateClassname()
    {
-      $this->assertTrue(Task::validateClassname('AddTask'));
-      $this->assertTrue(Task::validateClassname('MultiplyTask'));
-      $this->assertTrue(Task::validateClassname('NestedTask'));
+      $this->assertTrue(Task::validateClassname('sndsgd\task\ExampleAddTask'));
+      $this->assertTrue(Task::validateClassname('sndsgd\task\ExampleMultiplyTask'));
+      $this->assertTrue(Task::validateClassname('sndsgd\task\ExampleNestedTask'));
       $this->assertFalse(Task::validateClassname('StdClass'));
    }
 
    /**
-    * @covers \sndsgd\Task::validateClassname
+    * @covers ::validateClassname
     * @expectedException ReflectionException
     */
    public function testValidateClassnameException()
    {
-      $this->assertTrue(Task::validateClassname('THIS_CLASS_DOESNT_EXIST'));
+      Task::validateClassname('THIS_CLASS_DOESNT_EXIST');
    }   
 
    /**
-    * @covers \sndsgd\Task
-    * @expectedException Exception
-    */
-   public function testSetRunner()
-   {
-      $this->task->setRunner($this->runner);
-   }
-
-   /**
-    * @covers \sndsgd\Task
-    */
-   public function testGetRunner()
-   {
-      $this->assertInstanceOf('sndsgd\\task\Runner', $this->task->getRunner());
-   }
-
-   /**
-    * @covers \sndsgd\Task
-    * @covers \sndsgd\task\Runner
+    * @covers ::__construct
+    * @covers ::run
     */
    public function testAddTask()
    {
@@ -67,15 +55,14 @@ class TaskTest extends PHPUnit_Framework_TestCase
          'value' => [1,2,3]
       ];
 
-      $task = new AddTask;
-      $runner = new TaskRunner;
-      $result = $runner->run($task, $input);
+      $runner = new ExampleTaskRunner('sndsgd\\task\\ExampleAddTask');
+      $result = $runner->run($input);
       $this->assertEquals(6, $result);
    }
 
    /**
-    * @covers \sndsgd\Task
-    * @covers \sndsgd\task\Runner
+    * @covers ::__construct
+    * @covers ::run
     */
    public function testMultiplyTask()
    {
@@ -83,10 +70,40 @@ class TaskTest extends PHPUnit_Framework_TestCase
          'value' => [1,2,3]
       ];
 
-      $task = new MultiplyTask;
-      $runner = new TaskRunner;
-      $result = $runner->run($task, $input);
+      $runner = new ExampleTaskRunner('sndsgd\\task\\ExampleMultiplyTask');
+      $result = $runner->run($input);
       $this->assertEquals(6, $result);
+   }
+
+   /**
+    * @covers ::setRunner
+    * @covers ::getRunner
+    */
+   public function testSetAndGetRunner()
+   {
+      $runner = new ExampleTaskRunner('sndsgd\\task\\ExampleMultiplyTask');
+      $task = new ExampleAddTask;
+      $task->setRunner($runner);
+      $this->assertEquals($runner, $task->getRunner());
+
+   }
+
+   /**
+    * @covers ::getDescription
+    */
+   public function testGetDescription()
+   {
+      $task = new ExampleAddTask;
+      $this->assertTrue(is_string($task->getDescription()));
+   }
+
+   /**
+    * @covers ::getVersion
+    */
+   public function testGetVersion()
+   {
+      $task = new ExampleAddTask;
+      $this->assertTrue(is_string($task->getVersion()));
    }
 }
 

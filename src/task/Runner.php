@@ -4,14 +4,14 @@ namespace sndsgd\task;
 
 use \Exception;
 use \InvalidArgumentException;
-use \sndsgd\Debug;
+use \sndsgd\Env;
 use \sndsgd\Task;
 
 
 /**
  * A base class for task runners
  */
-abstract class Runner
+class Runner
 {
    /**
     * The task to run
@@ -21,42 +21,49 @@ abstract class Runner
    protected $task;
 
    /**
-    * Set the task to run
-    *
-    * @param sndsgd\Task $task
-    * @return void
+    * Constructor
+    * 
+    * @param string $classname The name of a task class
+    * @param array.<sndsgd\Field>|null $fields Fields to inject into the task
     */
-   protected function setTask(Task $task)
+   public function __construct($classname, array $fields = null)
    {
-      $task->setRunner($this);
-      $this->task = $task;
+      if (Task::validateClassname($classname) === false) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'classname'; expecting the name of ".
+            "a subclass of sndsgd\Task as string"
+         );
+      }
+
+      $this->task = new $classname($fields);
+      $this->task->setRunner($this);
+   }
+
+   /**
+    * Terminate the script
+    *
+    * This method exists for testing purposes
+    * @param integer $exitcode
+    */
+   public function terminate($exitcode)
+   {
+      Env::terminate($exitcode);
    }
 
    /**
     * Run a task
     *
-    * @param sndsgd\Task $task
     * @param mixed $data
     */
-   public function run($task, $data)
+   public function run($data)
    {
-      if (($task instanceof Task) === false) {
-         throw new InvalidArgumentException(
-            "invalid value provided for 'task'; ".
-            "expecting an instance of sndsgd\\Task"
-         );
+      $this->task->addValues($data);
+      if ($this->task->validate() === true) {
+         return $this->task->run();
       }
-
-      $this->setTask($task);
-      $fc = $this->task->getFieldCollection();
-      $fc->addValues($data);
-      if ($fc->validate() === false) {
-         $msg = $this->formatValidationErrors($fc->getValidationErrors());
-         Debug::error($msg);
-         return null;
-      }
-
-      return $this->task->run($fc->exportValues());
+      
+      $validationErrors = $this->task->getValidationErrors();
+      Env::error($this->formatValidationErrors($validationErrors));
    }
 
    /**
@@ -67,13 +74,25 @@ abstract class Runner
     */
    public function formatValidationErrors(array $errors)
    {
-      $tmp = ['the following validation errors were encountered:'];
+      $tmp = [];
+      $len = count($errors);
+      if ($len === 0) {
+         throw new InvalidArgumentException(
+            "invalid value provided for 'errors'; expecting an array that ".
+            "contains at least one instance of sndsgd\\field\\ValidationError"
+         );
+      }
+
+      $noun = ($len === 1) ? 'option' : 'options';
+      $tmp = ["failed to process $noun"];
       foreach ($errors as $error) {
          $name = $error->getName();
          $message = $error->getMessage();
-         $tmp[] = " {$name}: {$message}";
+         if (!array_key_exists($name, $tmp)) {
+            $tmp[$name] = " @[bold]$name@[reset] → $message";
+         }
       }
-      return implode(PHP_EOL, $tmp);
+      return implode(PHP_EOL, array_values($tmp)).PHP_EOL;
    }
 }
 

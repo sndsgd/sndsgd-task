@@ -4,15 +4,33 @@ namespace sndsgd;
 
 use \Exception;
 use \ReflectionClass;
-use \sndsgd\field\Collection as FieldCollection;
 use \sndsgd\task\Runner;
 
 
 /**
  * A base class for tasks that can be run in various environments
  */
-abstract class Task
+abstract class Task extends \sndsgd\field\Collection
 {
+   /**
+    * {@inheritdoc}
+    */
+   const EVENT_DATA_KEY = 'task';
+
+   /**
+    * All subclasses should override this constant with their version
+    * 
+    * @var string
+    */
+   const VERSION = '0.0.0';
+
+   /**
+    * All subclasses should override this constant with their description
+    * 
+    * @var string
+    */
+   const DESCRIPTION = 'No description provided';
+
    /**
     * Verify a classname is a subclass of sndsgd\Task
     * 
@@ -32,73 +50,63 @@ abstract class Task
    }
 
    /**
-    * A field collection for input data
-    *
-    * @var sndsgd\field\Collection
-    */
-   protected $fieldCollection;
-
-   /**
-    * The task runner instance
-    *
+    * A reference to the runner that is running the task
+    * 
     * @var sndsgd\task\Runner
     */
-   protected $runner = null;
+   protected $runner;
 
    /**
-    * Constructor
-    * 
+    * Create the task and optionally add fields to it
     */
-   public function __construct()
+   public function __construct(array $fields = null)
    {
-      $this->fieldCollection = new FieldCollection();
+      parent::__construct($fields);
    }
-
-   /**
-    * Get a description of what the task does
-    *
-    * @return string
-    */
-   abstract public function getDescription();
 
    /**
     * Run the task
-    *
-    * @param array.<string,mixed> $values
     */
-   abstract public function run(array $values);
+   abstract public function run();
 
    /**
-    * Get the field collection
+    * Set the runner
     * 
-    * @return sndsgd\field\Collection
-    */
-   public function getFieldCollection()
-   {
-      return $this->fieldCollection;
-   }
-
-   /**
-    * Register the task runner to run the task
-    * 
-    * @return void
+    * @param \sndsgd\task\Runner $runner
     */
    public function setRunner(Runner $runner)
    {
-      if ($this->runner !== null) {
-         throw new Exception("The task runner has already been set");
-      }
       $this->runner = $runner;
    }
 
    /**
-    * Get the task runner instance
-    *
-    * @return sndsgd\task\Runner
+    * Get the runner
+    * 
+    * @return \sndsgd\task\Runner
     */
    public function getRunner()
    {
       return $this->runner;
+   }
+
+   /**
+    * Get the task description
+    * 
+    * @return string
+    */
+   final public function getDescription()
+   {
+      return $this::DESCRIPTION;
+   }
+
+   /**
+    * Get the task version number
+    * 
+    * @return string
+    */
+   final public function getVersion()
+   {
+      return $this::VERSION;
    }
 }
 

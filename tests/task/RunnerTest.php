@@ -1,43 +1,80 @@
 <?php
 
+namespace sndsgd\task;
+
+use \sndsgd\Env;
 use \sndsgd\Task;
+use \sndsgd\task\ExampleTaskRunner;
 
 
-class RunnerTest extends PHPUnit_Framework_TestCase
+/**
+ * @coversDefaultClass \sndsgd\task\Runner
+ */
+class RunnerTest extends \PHPUnit_Framework_TestCase
 {
    protected $task;
    protected $runner;
 
    /**
-    * @covers \sndsgd\Task
-    * @covers \sndsgd\task\Runner
+    * @covers ::__construct
+    * @covers \sndsgd\Task::setRunner
     */
    public function setUp()
    {
-      $this->task = new AddTask;
-      $this->runner = new TaskRunner;
+      $this->runner = new ExampleTaskRunner('sndsgd\\task\\ExampleAddTask');
+      $class = 'sndsgd\\env\\Controller';
+      $controller = $this->getMockBuilder($class)->getMock();
+      $controller->method('terminate')->willReturn(true);
+      Env::setController($controller);
    }
 
    /**
-    * @covers \sndsgd\task\Runner
+    * @covers ::__construct
+    * @expectedException InvalidArgumentException
+    */
+   public function testInvalidTaskClassname()
+   {
+      new ExampleTaskRunner(new \StdClass);
+   }
+
+   /**
+    * @covers ::terminate
+    */
+   public function testTerminate()
+   {
+      $this->runner->terminate(1);
+   }
+
+   /**
+    * @covers ::run
+    * @covers ::formatValidationErrors
     */
    public function testValidationErrors()
    {
-      $result = $this->runner->run($this->task, [
+      $this->runner->run([
          'value' => [1,2,3],
          'unknown' => 'this will not validate'
       ]);
-
-      $this->assertNull($result);
    }
 
    /**
-    * @covers \sndsgd\task\Runner
+    * @covers ::run
+    */
+   public function testSuccessfullRun()
+   {
+      $result = $this->runner->run([
+         'value' => [1,2,3]
+      ]);
+      $this->assertEquals(6, $result);
+   }
+
+   /**
+    * @covers ::formatValidationErrors
     * @expectedException InvalidArgumentException
     */
-   public function testRunInvalidTask()
+   public function testFormatValidationErrorsException()
    {
-      $this->runner->run(42, null);
+      $this->runner->formatValidationErrors([]);
    }
 }
 
