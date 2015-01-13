@@ -46,6 +46,14 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
    }
 
    /**
+    * @covers ::getTask
+    */
+   public function testGetTask()
+   {
+      $this->assertInstanceOf('sndsgd\\Task', $this->runner->getTask());
+   }
+
+   /**
     * @covers ::run
     * @covers ::formatValidationErrors
     */

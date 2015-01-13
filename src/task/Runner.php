@@ -51,6 +51,16 @@ class Runner
    }
 
    /**
+    * Get the task instance
+    * 
+    * @return sndsgd\Task
+    */
+   public function getTask()
+   {
+      return $this->task;
+   }
+
+   /**
     * Run a task
     *
     * @param mixed $data
