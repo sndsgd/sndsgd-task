@@ -45,6 +45,18 @@ class TaskTest extends \PHPUnit_Framework_TestCase
       Task::validateClassname('THIS_CLASS_DOESNT_EXIST');
    }   
 
+   public function testAddTaskNoRunner()
+   {
+      $input = [
+         'value' => [1,2,3]
+      ];
+
+      $task = new \sndsgd\task\ExampleAddTask();
+      $task->addValues($input);
+      $this->assertTrue($task->validate());
+      $this->assertEquals(6, $task->run());
+   }
+
    /**
     * @covers ::__construct
     * @covers ::run
