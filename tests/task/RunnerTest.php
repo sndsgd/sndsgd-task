@@ -55,7 +55,7 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
 
    /**
     * @covers ::run
-    * @covers ::formatValidationErrors
+    * @covers ::formatErrors
     */
    public function testValidationErrors()
    {
@@ -77,12 +77,12 @@ class RunnerTest extends \PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers ::formatValidationErrors
+    * @covers ::formatErrors
     * @expectedException InvalidArgumentException
     */
    public function testFormatValidationErrorsException()
    {
-      $this->runner->formatValidationErrors([]);
+      $this->runner->formatErrors([]);
    }
 }
 

@@ -88,19 +88,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase
    }
 
    /**
-    * @covers ::setRunner
-    * @covers ::getRunner
-    */
-   public function testSetAndGetRunner()
-   {
-      $runner = new ExampleTaskRunner('sndsgd\\task\\ExampleMultiplyTask');
-      $task = new ExampleAddTask;
-      $task->setRunner($runner);
-      $this->assertEquals($runner, $task->getRunner());
-
-   }
-
-   /**
     * @covers ::getDescription
     */
    public function testGetDescription()

@@ -36,7 +36,6 @@ class Runner
       }
 
       $this->task = new $classname($fields);
-      $this->task->setRunner($this);
    }
 
    /**
@@ -72,24 +71,24 @@ class Runner
          return $this->task->run();
       }
       
-      $validationErrors = $this->task->getValidationErrors();
-      Env::error($this->formatValidationErrors($validationErrors));
+      $errors = $this->task->getErrors();
+      Env::error($this->formatErrors($errors));
    }
 
    /**
-    * Format validation errors for the runner environment
+    * Format field errors for the runner environment
     * 
-    * @param array.<sndsgd\field\ValidationError> $errors
+    * @param array.<sndsgd\field\Error> $errors
     * @return string
     */
-   public function formatValidationErrors(array $errors)
+   public function formatErrors(array $errors)
    {
       $tmp = [];
       $len = count($errors);
       if ($len === 0) {
          throw new InvalidArgumentException(
             "invalid value provided for 'errors'; expecting an array that ".
-            "contains at least one instance of sndsgd\\field\\ValidationError"
+            "contains at least one instance of sndsgd\\field\\Error"
          );
       }
 

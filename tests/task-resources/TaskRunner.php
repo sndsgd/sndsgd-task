@@ -2,9 +2,6 @@
 
 namespace sndsgd\task;
 
-use \sndsgd\Task;
-use \sndsgd\Field;
-
 
 /**
  * @codeCoverageIgnore

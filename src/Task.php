@@ -50,13 +50,6 @@ abstract class Task extends \sndsgd\field\Collection
    }
 
    /**
-    * A reference to the runner that is running the task
-    * 
-    * @var sndsgd\task\Runner
-    */
-   protected $runner;
-
-   /**
     * Create the task and optionally add fields to it
     */
    public function __construct(array $fields = null)
@@ -68,26 +61,6 @@ abstract class Task extends \sndsgd\field\Collection
     * Run the task
     */
    abstract public function run();
-
-   /**
-    * Set the runner
-    * 
-    * @param \sndsgd\task\Runner $runner
-    */
-   public function setRunner(Runner $runner)
-   {
-      $this->runner = $runner;
-   }
-
-   /**
-    * Get the runner
-    * 
-    * @return \sndsgd\task\Runner
-    */
-   public function getRunner()
-   {
-      return $this->runner;
-   }
 
    /**
     * Get the task description

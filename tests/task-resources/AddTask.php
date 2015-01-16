@@ -2,9 +2,10 @@
 
 namespace sndsgd\task;
 
-use sndsgd\Field;
-use sndsgd\field\rule\MinValueCount;
-use sndsgd\field\rule\Required;
+use \sndsgd\Field;
+use \sndsgd\field\FloatField;
+use \sndsgd\field\rule\MinValueCountRule;
+use \sndsgd\field\rule\RequiredRule;
 
 
 /**
@@ -22,13 +23,13 @@ class ExampleAddTask extends \sndsgd\Task
    {
       parent::__construct($fields);
       $this->addFields([
-         Field::float('value')
-            ->setDescription('A value to add')
+         (new FloatField('value'))
+            ->setDescription('a value to add')
             ->setExportHandler(Field::EXPORT_ARRAY)
-            ->addRules(
-               new Required,
-               new MinValueCount(2)
-            )
+            ->addRules([
+               new RequiredRule,
+               new MinValueCountRule(2)
+            ])
       ]);
    }
 
