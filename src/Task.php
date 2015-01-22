@@ -51,8 +51,10 @@ abstract class Task extends \sndsgd\field\Collection
 
    /**
     * Create the task and optionally add fields to it
+    *
+    * @param array.<sndsgd\Field> $fields 
     */
-   public function __construct(array $fields = null)
+   public function __construct(array $fields = [])
    {
       parent::__construct($fields);
    }

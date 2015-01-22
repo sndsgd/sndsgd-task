@@ -19,7 +19,7 @@ class ExampleMultiplyTask extends \sndsgd\Task
    /**
     * {@inheritdoc}
     */
-   public function __construct(array $fields = null)
+   public function __construct(array $fields = [])
    {
       parent::__construct($fields);
       $this->addFields([
