@@ -1,6 +1,6 @@
 {
    "name": "sndsgd/task",
-   "description": "Tools for creating tasks that run in various environments",
+   "description": "Tools for running tasks in various environments",
    "type": "library",
    "license": "MIT",
    "homepage": "https://github.com/sndsgd/sndsgd-task",
@@ -10,7 +10,7 @@
    },
    "require": {
       "php": ">=5.4.0",
-      "sndsgd/util": "~0.5",
+      "sndsgd/util": "~0.6",
       "sndsgd/event": "~0.5",
       "sndsgd/field": "~0.6"
    },
